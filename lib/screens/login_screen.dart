@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
 import 'package:grocery_plus/screens/forget_password_screen.dart';
 import 'package:grocery_plus/screens/signup_screen.dart';
 
@@ -109,9 +110,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: "Next",
                       icon: Icons.arrow_forward,
                       ontap: () {
-                        setState(() {
-                          name = "Ali";
-                        });
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => BottomNavBar()),
+                            (route) => false);
                       },
                     ),
                     const SizedBox(
