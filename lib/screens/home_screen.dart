@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
+import 'package:grocery_plus/widgets/home_card_widget.dart';
 import 'package:grocery_plus/widgets/location_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -35,7 +36,27 @@ class HomeScreen extends StatelessWidget {
           CustomTextField(
               hintText: "Search here",
               prefixIcon: Icon(Icons.search),
-              controller: searchController)
+              controller: searchController),
+              SizedBox(
+                height: 12,
+              ),
+              Expanded(child:GirdView.builder(
+                itemCount: item.vegetable.length,
+                gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                 
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 20,
+                ),
+             
+                itemBuilder: (context, index) {
+                  return HomeCardWidget(
+                    image: "assets/images/${index + 1}.png",
+                    name: "Item ${index + 1}",
+                    rating: "${index + 4}.5",
+                  );
+                },
+              )),
         ]),
       ),
     ));
