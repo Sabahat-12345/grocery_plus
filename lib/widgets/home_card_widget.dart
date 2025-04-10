@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:grocery_plus/constants/colors.dart';
 
 class HomeCardWidget extends StatefulWidget {
-   final String image;
- final String name;
- final String rating;
-  const HomeCardWidget({super.key,
+  final String image;
+  final String name;
+  final String rating;
+  const HomeCardWidget({
+    super.key,
     required this.image,
     required this.name,
     required this.rating,
@@ -16,13 +17,10 @@ class HomeCardWidget extends StatefulWidget {
 }
 
 class _HomeCardWidgetState extends State<HomeCardWidget> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:MediaQuery.of(context).size.height * 0.2,
+      height: MediaQuery.of(context).size.height * 0.2,
       width: MediaQuery.of(context).size.width * 0.4,
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
@@ -34,21 +32,17 @@ class _HomeCardWidgetState extends State<HomeCardWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset( "images",
-            height: 80),
+            Image.asset(widget.image, height: 80),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('name'),
+                Text(widget.name),
                 Row(
                   children: [
-                    Text('rating'),
-                    Icon(Icons.star,color: Colors.amber,
-                    size: 12  )
-
+                    Text(widget.rating),
+                    Icon(Icons.star, color: Colors.amber, size: 12)
                   ],
                 )
-
               ],
             )
           ],

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/screens/card_screen.dart';
 import 'package:grocery_plus/screens/favorite_screen.dart';
 import 'package:grocery_plus/screens/home_screen.dart';
 import 'package:grocery_plus/screens/profile_screen.dart';
 
-import 'card_screen.dart';
+// import 'card_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -17,10 +18,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 0; // Declare and initialize selectedIndex
   List Screens = [
     HomeScreen(),
-    CardScreen(),
+    CartScreen(),
     FavoriteScreen(),
     ProfileScreen(),
-   
   ]; // List of screens to display
 
   @override
@@ -33,13 +33,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
             selectedIndex = index; // Update selectedIndex on tap
           });
         },
-         type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.primaryColor,
         unselectedItemColor: AppColors.fontColor,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Card'),
-            BottomNavigationBarItem(
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: 'Card'),
+          BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: "Favorite"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],

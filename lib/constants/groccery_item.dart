@@ -1,34 +1,41 @@
 class GrocceryItem {
-  List vegetable = [
-    {
-      "name": "Tomato",
-      "image": "assets/images/1.png",
-      "price": "2.5",
-      rating: "4.5",
-    },
-    {
-      "name": "Potato",
-      "image": "assets/images/2.png",
-      "price": 1.5,
-      rating: "4.0",
-    },
+  List vegtable = [
     {
       "name": "Onion",
-      "image": "assets/images/3.png",
-      "price": 1.0,
-      rating: "4.2",
+      "image": "images/1.png",
+         
+      "rating": "4.5",
+      "price": "120",
+    },
+    {
+      "name": "Cucumber",
+      "image":
+         "images/2.png",
+      "rating": "4.6",
+      "price": "150",
+    },
+    {
+      "name": "Avocado",
+      "image":
+         "images/3.png",
+      "rating": "4.7",
+      "price": "400",
     },
     {
       "name": "Carrot",
-      "image": "assets/images/4.png",
-      "price": 3.0,
-      rating: "4.8",
+      "image":
+          "images/3.png",
+      "rating": "4.9",
+      "price": "100",
     },
     {
-      "name": "Carrot",
-      "image": "assets/images/5 .png",
-      "price": 4.0,
-      rating: "4.1",
+      "name": "Avocado",
+      "image":
+          "images/5.png",
+      "rating": "4.7",
+      "price": "400",
     },
+  
   ];
+ 
 }

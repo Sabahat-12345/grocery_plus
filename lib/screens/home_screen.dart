@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/constants/groccery_item.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
 import 'package:grocery_plus/widgets/home_card_widget.dart';
 import 'package:grocery_plus/widgets/location_widget.dart';
@@ -10,6 +11,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var searchController = TextEditingController();
+    final GrocceryItem item = GrocceryItem();
+
     return Scaffold(
         body: SafeArea(
       child: Padding(
@@ -37,26 +40,26 @@ class HomeScreen extends StatelessWidget {
               hintText: "Search here",
               prefixIcon: Icon(Icons.search),
               controller: searchController),
-              SizedBox(
-                height: 12,
-              ),
-              Expanded(child:GirdView.builder(
-                itemCount: item.vegetable.length,
-                gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                 
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 20,
-                ),
-             
-                itemBuilder: (context, index) {
-                  return HomeCardWidget(
-                    image: "assets/images/${index + 1}.png",
-                    name: "Item ${index + 1}",
-                    rating: "${index + 4}.5",
-                  );
-                },
-              )),
+          SizedBox(
+            height: 12,
+          ),
+          Expanded(
+              child: GridView.builder(
+            itemCount: item.vegtable.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 20,
+            ),
+            itemBuilder: (context, index) {
+              var groItems = item.vegtable[index];
+              return HomeCardWidget(
+                image: groItems['image'],
+                name: groItems['name'],
+                rating: groItems['rating'],
+              );
+            },
+          )),
         ]),
       ),
     ));
