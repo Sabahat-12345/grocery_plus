@@ -1,9 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CartWidget extends StatelessWidget {
-  const CartWidget({super.key});
+    final String name;
+  final String image;
+  final String rating;
+  final String price;
+
+  const CartWidget({
+    super.key,
+    this.name = '',
+    this.image = '',
+    this.rating = '',
+    this.price = '',
+  });
+  // Removed duplicate unnamed constructor
+  
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +28,7 @@ class CartWidget extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  "images/splash_image.png",
+                  image,
                   height: 60,
                   width: 60,
                 ),
@@ -27,20 +39,25 @@ class CartWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Product Name",
+                      name,
                       style: GoogleFonts.poppins(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Product Name",
+                      "Rating: $rating",
                       style: GoogleFonts.poppins(
-                          fontSize: 16, fontWeight: FontWeight.w300),
+                          fontSize: 14, fontWeight: FontWeight.w300),
+                    ),
+                    Text(
+                      "\$$price",
+                      style: GoogleFonts.poppins(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
               ],
             ),
-            Icon(Icons.delete),
+            const Icon(Icons.delete),
           ],
         ),
       ),
