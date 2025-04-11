@@ -18,7 +18,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 0; // Declare and initialize selectedIndex
   List Screens = [
     HomeScreen(),
-    CartScreen(),
+    CardScreen(),
     FavoriteScreen(),
     ProfileScreen(),
   ]; // List of screens to display

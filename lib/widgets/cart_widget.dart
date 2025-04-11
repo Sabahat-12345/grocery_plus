@@ -9,10 +9,10 @@ class CartWidget extends StatelessWidget {
 
   const CartWidget({
     super.key,
-    this.name = '',
-    this.image = '',
-    this.rating = '',
-    this.price = '',
+     required this.image,
+    required this.name,
+    required this.rating,
+    required this.price,
   });
   // Removed duplicate unnamed constructor
   

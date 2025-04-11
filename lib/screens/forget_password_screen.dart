@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
@@ -14,6 +13,7 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -22,9 +22,19 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: Text("Forget Password"),
+        backgroundColor: AppColors.primaryColor,
+        title: Text(
+          "Forgot Password",
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
         leading: InkWell(
             onTap: () {
@@ -32,46 +42,85 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             },
             child: Icon(Icons.arrow_back_ios)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Image.asset(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+
+            // Logo or Banner
+            Center(
+              child: Image.asset(
                 "images/splash_image.png",
-                height: 100,
-                width: 200,
+                height: 120,
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Please Enter Your Email Address",
-                  style: GoogleFonts.poppins(fontSize: 16),
+            ),
+            const SizedBox(height: 30),
+
+            // Text Instruction
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Reset your password",
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
-              const SizedBox(
-                height: 16,
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Enter the email address associated with your account. We’ll send you a link to reset your password.",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: AppColors.fontGrayColor,
+                ),
               ),
-              CustomTextField(
-                  hintText: "Enter you mail",
-                  prefixIcon: Icon(
-                    Icons.mail,
-                    color: AppColors.primaryColor,
+            ),
+            const SizedBox(height: 30),
+
+            // Card with input field
+            Container(
+              width: size.width,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  CustomTextField(
+                    hintText: "Enter your email",
+                    prefixIcon: Icon(
+                      Icons.mail_outline,
+                      color: AppColors.primaryColor,
+                    ),
+                    controller: emailController,
                   ),
-                  controller: emailController),
-              const SizedBox(
-                height: 250,
+                  const SizedBox(height: 30),
+
+                  // Send Email Button
+                  PrimaryButton(
+                    title: "Send Reset Link",
+                    icon: Icons.send,
+                    ontap: () {
+                      // Add logic here
+                    },
+                  ),
+                ],
               ),
-              PrimaryButton(title: "Send Mail", icon: Icons.mail, ontap: () {})
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

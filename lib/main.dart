@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+// import 'package:grocery_plus/screens/forget_password_screen.dart';
+// import 'package:grocery_plus/screens/profile_screen.dart';
+// import 'package:grocery_plus/screens/login_screen.dart';
+// import 'package:grocery_plus/screens/signup_screen.dart';
 import 'package:grocery_plus/screens/splash_screen.dart';
-
 
 void main() {
   runApp(const MyApp());
