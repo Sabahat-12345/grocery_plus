@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
@@ -15,12 +16,38 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+   FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoading = false;
+  Future<void> registerUser(String email, String password) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if (userCredential.user != null) {
+        userCredential.user!.sendEmailVerification();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Verification email sent to ${email}")));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => LoginScreen()));
+      }
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.code);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  } 
 
   @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -33,7 +60,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
+            child:
+            isLoading ==true ? CircularProgressIndicator():SingleChildScrollView(
+
+            child:  Column(
               children: [
                 const SizedBox(height: 30),
                 // Logo
@@ -70,6 +100,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 15),
+                // Phone Input
+                CustomTextField(
+                  hintText: "Phone Number",
+                  prefixIcon: Icon(Icons.phone, color: AppColors.primaryColor),
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 15),
 
                 // Password Input
                 CustomTextField(
@@ -86,10 +124,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   title: "Sign Up",
                   icon: Icons.check,
                   ontap: () {
-                    // Navigate to home or login
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Account Created!"),
+                    if (passwordController.text.isNotEmpty && emailController.text.isNotEmpty){
+                      registerUser(emailController.text, passwordController.text);
+                    }else{
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Please fill all the fields"),
                     ));
+                    }
+                    // Navigate to home or login
+                   
                   },
                 ),
                 const SizedBox(height: 20),
