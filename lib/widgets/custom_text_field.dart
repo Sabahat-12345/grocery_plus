@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final Icon? suffixIcon;
+  final int? maxLines;
+  final Function()? onTap;
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -11,19 +13,23 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.hintText,
-    required this.prefixIcon,
+    this.maxLines = 1,
+    this.prefixIcon,
     this.suffixIcon,
+    this.onTap,
     required this.controller,
     this.keyboardType = TextInputType.text,
-    this.obscureText = false, // Default to false for non-password fields
+    this.obscureText = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLines: obscureText ? 1 : maxLines, // Password should be single line
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onTap: onTap,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon,
@@ -32,7 +38,7 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         filled: true,
-        fillColor: Colors.grey[200], // Light gray background for input field
+        fillColor: Colors.grey[200],
       ),
     );
   }

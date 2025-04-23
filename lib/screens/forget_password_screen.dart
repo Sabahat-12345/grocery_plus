@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
@@ -13,6 +14,30 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
+  bool isLoading = false;
+  var auth = FirebaseAuth.instance;
+  sendlinkForResetPassword() async {
+    if (emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Please Enter Your Email")));
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await auth.sendPasswordResetEmail(email: emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Password Reset Link Sent Successfully")));
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      debugPrint("this is the error${e.code}");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -114,7 +139,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     title: "Send Reset Link",
                     icon: Icons.send,
                     ontap: () {
-                      // Add logic here
+                      sendlinkForResetPassword();
                     },
                   ),
                 ],
