@@ -61,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  bool isShow = false;
   @override
   void dispose() {
     emailController.dispose();
@@ -123,7 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             Icon(Icons.lock, color: AppColors.primaryColor),
                         controller: passwordController,
                         suffixIcon: Icon(Icons.visibility_off),
-                        obscureText: true,
+                        obscureText: isShow,
+                        onTap: () {
+                          setState(() {
+                            isShow = !isShow;
+                          });
+                        },
                       ),
                       const SizedBox(height: 10),
 

@@ -56,6 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  bool isShow = false;
   @override
   void dispose() {
     nameController.dispose();
@@ -132,7 +133,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Icon(Icons.lock, color: AppColors.primaryColor),
                           suffixIcon: Icon(Icons.visibility_off),
                           controller: passwordController,
-                          obscureText: true,
+                          obscureText: isShow,
+                          onTap: () {
+                            setState(() {
+                              isShow = !isShow;
+                            });
+                          },
                         ),
                         const SizedBox(height: 30),
 
