@@ -32,7 +32,12 @@ class _HomeCardWidgetState extends State<HomeCardWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(widget.image, height: 80),
+            Image.network(
+              widget.image,
+              height: 100,
+              width: 300,
+              fit: BoxFit.cover,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
