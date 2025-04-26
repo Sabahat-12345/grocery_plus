@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/Models/grocery_model.dart';
 import 'package:grocery_plus/constants/groccery_item.dart';
+import 'package:grocery_plus/screens/product_detail.dart';
 import 'package:grocery_plus/screens/upload_items.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
 import 'package:grocery_plus/widgets/home_card_widget.dart';
@@ -98,11 +99,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisSpacing: 20,
                               ),
                               itemBuilder: (context, index) {
-                                var groItems = item.vegtable[index];
+                                var groItems = itemslist[index];
                                 return HomeCardWidget(
-                                  image: itemslist[index].imageUrl,
-                                  name: itemslist[index].name,
-                                  rating: groItems['rating'],
+                                  image: groItems.imageUrl,
+                                  name: groItems.name,
+                                  rating: '0',
+                                  ontap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (c) => ProductDetailScreen(
+                                                  items: itemslist[index],
+                                                )));
+                                  },
                                 );
                               },
                             ),

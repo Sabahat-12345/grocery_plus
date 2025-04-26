@@ -48,7 +48,7 @@ class _UploadItemsState extends State<UploadItems> {
       Items items = Items(
           name: nameController.text,
           imageUrl:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR6DRD5G9pU8_DhlWpWsNiyQPDPfEn1VwpGw&s",
+              "https://e7.pngegg.com/pngimages/354/144/png-clipart-cheeseburger-buffalo-burger-breakfast-sandwich-hamburger-slider-cheese-food-cheese-thumbnail.png",
           descritpion: diController.text,
           price: priceController.text,
           productId: productId);
