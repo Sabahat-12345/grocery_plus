@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/grocery_model.dart';
 
 class CartWidget extends StatelessWidget {
-    final String name;
-  final String image;
-  final String rating;
-  final String price;
-
-  const CartWidget({
-    super.key,
-     required this.image,
-    required this.name,
-    required this.rating,
-    required this.price,
-  });
+    final Items items;
+      final Function() onDelete;
+        CartWidget({super.key, required this.onDelete, required this.items});
+   
   // Removed duplicate unnamed constructor
   
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return  Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
@@ -27,8 +20,8 @@ class CartWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset(
-                  image,
+                Image.network(
+                  items.imageUrl,
                   height: 60,
                   width: 60,
                 ),
@@ -39,25 +32,20 @@ class CartWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      items.name,
                       style: GoogleFonts.poppins(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Rating: $rating",
+                      items.price,
                       style: GoogleFonts.poppins(
-                          fontSize: 14, fontWeight: FontWeight.w300),
-                    ),
-                    Text(
-                      "\$$price",
-                      style: GoogleFonts.poppins(
-                          fontSize: 14, fontWeight: FontWeight.w500),
+                          fontSize: 16, fontWeight: FontWeight.w300),
                     )
                   ],
                 ),
               ],
             ),
-            const Icon(Icons.delete),
+            InkWell(onTap: onDelete, child: Icon(Icons.delete)),
           ],
         ),
       ),
