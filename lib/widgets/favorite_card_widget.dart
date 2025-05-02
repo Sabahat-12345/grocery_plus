@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/grocery_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
 
 class FavoriteCardWidget extends StatelessWidget {
-  final String name;
-  final String image;
-  final String rating;
-  final String price;
-
-  const FavoriteCardWidget({
-    super.key,
-    required this.name,
-    required this.image,
-    required this.rating,
-    required this.price,
-  });
+  final Items items;
+  final Function() onDelete;
+  const FavoriteCardWidget(
+      {super.key, required this.items, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("this is user profile:${items.imageUrl}");
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -31,8 +25,8 @@ class FavoriteCardWidget extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    image,
+                  child: Image.network(
+                    items.imageUrl,
                     height: 60,
                     width: 60,
                     fit: BoxFit.cover,
@@ -43,7 +37,7 @@ class FavoriteCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      items.name,
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -51,7 +45,7 @@ class FavoriteCardWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Rating: $rating",
+                      "Rating: 5",
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -59,7 +53,7 @@ class FavoriteCardWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "\$$price",
+                      "\$${items.price}",
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -73,7 +67,9 @@ class FavoriteCardWidget extends StatelessWidget {
             // Right Side: Icons
             Column(
               children: [
-                Icon(Icons.delete, color: AppColors.primaryColor),
+                InkWell(
+                    onTap: onDelete,
+                    child: Icon(Icons.delete, color: AppColors.primaryColor)),
                 const SizedBox(height: 10),
                 Icon(Icons.shopping_cart, color: AppColors.primaryColor),
               ],

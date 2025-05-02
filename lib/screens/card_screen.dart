@@ -48,7 +48,7 @@ class _CardScreenState extends State<CardScreen> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (c) =>  BottomNavBar()),
+              MaterialPageRoute(builder: (c) => BottomNavBar()),
             );
           },
           child: Icon(Icons.arrow_back_ios),

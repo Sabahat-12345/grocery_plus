@@ -60,7 +60,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           price: widget.items.price,
           productId: widget.items.productId);
       await firestore
-          .collection('users')
+          .collection('Users')
           .doc(auth.currentUser!.uid)
           .collection('wishList')
           .doc(widget.items.productId)
@@ -216,9 +216,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          addToCart(
-                          
-                          );
+                          addToCart();
                         },
                         child: Container(
                           height: 60,
