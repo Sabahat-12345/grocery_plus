@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/user_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/screens/edit_profile_screen.dart';
 import 'package:grocery_plus/screens/login_screen.dart';
+import 'package:grocery_plus/widgets/profile_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,6 +17,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   var auth = FirebaseAuth.instance;
+  var firestore = FirebaseFirestore.instance;
+  UserModel?  currentUser;
   Future<void> logout() async {
     try {
       await auth.signOut();
@@ -22,12 +28,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
       debugPrint("this is the error${e.code}");
     }
   }
+   Future<void> fetchCurrentUserData() async {
+    try {
+      var userData =
+          await firestore.collection("Users").doc(auth.currentUser!.uid).get();
+      if (userData.exists) {
+        setState(() {
+          currentUser = UserModel.fromMap(userData.data()!);
+        });
+      } else {
+        debugPrint("User data does not exist");
+      }
+    } catch (e) {
+      debugPrint("this is the error$e");
+    }
+  }
+ @override
+  void initState() {
+    fetchCurrentUserData();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile',
+        title: Text( currentUser?.username ??"Profile",
             style:
                 GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.primaryColor,
@@ -41,8 +68,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('images/my pic.jpg'),
+                backgroundImage: AssetImage(currentUser?.profilePic ?? "images/my pic.jpg"),
               ),
+              
             ),
             const SizedBox(height: 16),
             Center(
@@ -53,6 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor),
               ),
+              
             ),
             const SizedBox(height: 8),
             Center(
@@ -61,7 +90,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: GoogleFonts.poppins(
                     fontSize: 16, color: AppColors.fontGrayColor),
               ),
+              
             ),
+               Divider(
+              color: Colors.grey.shade300,
+              thickness: 1.5,
+            ),
+              const SizedBox(
+              height: 20,
+            ),
+             ProfileWidget(
+                leadingIcon: Icons.edit,
+                title: "Edit Profile",
+                ontap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) => EditProfileScreen(
+                                currentUser: currentUser!,
+                              )));
+                }),
             const SizedBox(height: 30),
             _buildProfileOption('Edit Profile', Icons.edit),
             _buildProfileOption('Order History', Icons.history),
