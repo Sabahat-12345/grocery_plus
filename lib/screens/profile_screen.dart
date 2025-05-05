@@ -18,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var auth = FirebaseAuth.instance;
   var firestore = FirebaseFirestore.instance;
-  UserModel?  currentUser;
+  UserModel? currentUser;
   Future<void> logout() async {
     try {
       await auth.signOut();
@@ -28,7 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       debugPrint("this is the error${e.code}");
     }
   }
-   Future<void> fetchCurrentUserData() async {
+
+  Future<void> fetchCurrentUserData() async {
     try {
       var userData =
           await firestore.collection("Users").doc(auth.currentUser!.uid).get();
@@ -43,18 +44,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       debugPrint("this is the error$e");
     }
   }
- @override
+
+  @override
   void initState() {
     fetchCurrentUserData();
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text( currentUser?.username ??"Profile",
+        title: Text("Profile",
             style:
                 GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.primaryColor,
@@ -68,50 +69,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage(currentUser?.profilePic ?? "images/my pic.jpg"),
+                backgroundImage: NetworkImage(currentUser?.profilePic ?? ""),
               ),
-              
             ),
             const SizedBox(height: 16),
             Center(
               child: Text(
-                "Sabahat Ali",
+                currentUser?.username ?? "Sabahat Ali",
                 style: GoogleFonts.poppins(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor),
               ),
-              
             ),
             const SizedBox(height: 8),
             Center(
               child: Text(
-                "sabahat@email.com",
+                currentUser?.email ?? "sabahatali976@gmail.com",
                 style: GoogleFonts.poppins(
                     fontSize: 16, color: AppColors.fontGrayColor),
               ),
-              
             ),
-               Divider(
+            Divider(
               color: Colors.grey.shade300,
               thickness: 1.5,
             ),
-              const SizedBox(
+            const SizedBox(
               height: 20,
             ),
-             ProfileWidget(
-                leadingIcon: Icons.edit,
-                title: "Edit Profile",
-                ontap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) => EditProfileScreen(
-                                currentUser: currentUser!,
-                              )));
-                }),
-            const SizedBox(height: 30),
-            _buildProfileOption('Edit Profile', Icons.edit),
+            _buildProfileOption('Edit Profile', Icons.edit, onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfileScreen(
+                    currentUser: currentUser!,
+                  ),
+                ),
+              );
+            }),
             _buildProfileOption('Order History', Icons.history),
             _buildProfileOption('Payment Methods', Icons.payment),
             _buildProfileOption('Addresses', Icons.location_on),
