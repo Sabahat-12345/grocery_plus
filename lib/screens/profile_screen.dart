@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/Models/user_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/screens/change_password_sceen.dart';
 import 'package:grocery_plus/screens/edit_profile_screen.dart';
 import 'package:grocery_plus/screens/login_screen.dart';
 import 'package:grocery_plus/widgets/profile_widget.dart';
@@ -110,6 +111,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildProfileOption('Order History', Icons.history),
             _buildProfileOption('Payment Methods', Icons.payment),
             _buildProfileOption('Addresses', Icons.location_on),
+            _buildProfileOption('Change Password', Icons.lock, onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (c) => const ChangePasswordSceen()));
+            }),
             _buildProfileOption('Log Out', Icons.logout, onTap: () {
               logout();
               // Implement log out logic

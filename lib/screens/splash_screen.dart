@@ -2,9 +2,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
-import 'package:grocery_plus/screens/login_screen.dart';
+import 'package:grocery_plus/controllers/splash_controller.dart';
+// import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
+// import 'package:grocery_plus/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,28 +16,29 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  FirebaseAuth auth = FirebaseAuth.instance;
+//   FirebaseAuth auth = FirebaseAuth.instance;
 
-  @override
-  void initState() {
-    super.initState();
-    manageSession();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     manageSession();
+//   }
 
-  manageSession() async {
-    await Future.delayed(Duration(seconds: 3), () {
-      if (auth.currentUser != null && auth.currentUser?.emailVerified == true)
-      {
- Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (c) => BottomNavBar()), (route) => false);
-      } else{
-         Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
-      }
-     
-    });
-  }
+//   manageSession() async {
+//     await Future.delayed(Duration(seconds: 3), () {
+//       if (auth.currentUser != null && auth.currentUser?.emailVerified == true)
+//       {
+//  Navigator.pushAndRemoveUntil(context,
+//           MaterialPageRoute(builder: (c) => BottomNavBar()), (route) => false);
+//       } else{
+//          Navigator.pushAndRemoveUntil(context,
+//             MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
+//       }
 
+//     });
+//   }
+
+  SplashController splashController = Get.put(SplashController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
