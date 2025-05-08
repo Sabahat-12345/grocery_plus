@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/controllers/auth_controller.dart';
 import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
 import 'package:grocery_plus/screens/forget_password_screen.dart';
 import 'package:grocery_plus/screens/signup_screen.dart';
@@ -19,49 +23,51 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  String? name;
+  AuthController authController = Get.put(AuthController());
+  // FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> loginUser() async {
-    setState(() {
-      isLoading = true;
-    });
+  // Future<void> loginUser() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    try {
-      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please fill all the fields')),
-        );
-        return;
-      }
+  //   try {
+  //     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Please fill all the fields')),
+  //       );
+  //       return;
+  //     }
 
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
+  //       email: emailController.text.trim(),
+  //       password: passwordController.text.trim(),
+  //     );
 
-      if (userCredential.user != null && userCredential.user!.emailVerified) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (c) => BottomNavBar()),
-          (route) => false,
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('User is not verified or does not exist')),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Login failed')),
-      );
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  //     if (userCredential.user != null && userCredential.user!.emailVerified) {
+  //       Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(builder: (c) => BottomNavBar()),
+  //         (route) => false,
+  //       );
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('User is not verified or does not exist')),
+  //       );
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text(e.message ?? 'Login failed')),
+  //     );
+  //   } finally {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
-  bool isShow = false;
+  // bool isShow = false;
   @override
   void dispose() {
     emailController.dispose();
@@ -89,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 220,
                       ),
                       const SizedBox(height: 30),
-                      Text("Welcome to",
+                      Text("Welcome to ",
                           style: GoogleFonts.poppins(
                               fontSize: 22,
                               fontWeight: FontWeight.w500,
@@ -118,18 +124,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
 
                       // Password Field
-                      CustomTextField(
-                        hintText: "Password",
-                        prefixIcon:
-                            Icon(Icons.lock, color: AppColors.primaryColor),
-                        controller: passwordController,
-                        suffixIcon: Icon(Icons.visibility_off),
-                        obscureText: isShow,
-                        onTap: () {
-                          setState(() {
-                            isShow = !isShow;
-                          });
-                        },
+                      Obx(
+                        () => CustomTextField(
+                          hintText: "Password",
+                          prefixIcon:
+                              Icon(Icons.lock, color: AppColors.primaryColor),
+                          controller: passwordController,
+                          // suffixIcon: Icon(Icons.visibility_off),
+                          // obscureText: isShow,
+                          onTap: () {
+                            // setState(() {
+                            //     isShow = !isShow;
+                            //   }  );
+                            authController.isShow.value =
+                                !authController.isShow.value;
+                          },
+                          suffixIcon: Icon(
+                            Icons.visibility_off,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 10),
 
@@ -158,7 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "Next",
                         icon: Icons.arrow_forward,
                         ontap: () {
-                          loginUser();
+                          authController.loginUser(
+                              emailController.text, passwordController.text);
                         },
                       ),
 
