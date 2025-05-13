@@ -123,25 +123,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Password Field
-                      Obx(
-                        () => CustomTextField(
-                          hintText: "Password",
-                          prefixIcon:
-                              Icon(Icons.lock, color: AppColors.primaryColor),
-                          controller: passwordController,
-                          // suffixIcon: Icon(Icons.visibility_off),
-                          // obscureText: isShow,
-                          onTap: () {
-                            // setState(() {
-                            //     isShow = !isShow;
-                            //   }  );
-                            authController.isShow.value =
-                                !authController.isShow.value;
-                          },
-                          suffixIcon: Icon(
-                            Icons.visibility_off,
-                          ),
+                      CustomTextField(
+                        hintText: "Password",
+                        prefixIcon:
+                            Icon(Icons.lock, color: AppColors.primaryColor),
+                        controller: passwordController,
+                        // suffixIcon: Icon(Icons.visibility_off),
+                        // obscureText: isShow,
+                        onTap: () {
+                          // setState(() {
+                          //     isShow = !isShow;
+                          //   }  );
+                          authController.isShow.value =
+                              !authController.isShow.value;
+                        },
+                        suffixIcon: Icon(
+                          Icons.visibility_off,
                         ),
                       ),
                       const SizedBox(height: 10),

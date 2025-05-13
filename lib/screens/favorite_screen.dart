@@ -17,22 +17,22 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   var firestore = FirebaseFirestore.instance;
   var auth = FirebaseAuth.instance;
 
-  Stream<List<Items>> getCartItems() {
+  Stream<List<Items>> getWishListItems() {
     return firestore
         .collection('users') // fixed casing (was 'Users')
         .doc(auth.currentUser!.uid)
-        .collection("cartItems")
+        .collection("wishList")
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Items.fromMap(doc.data())).toList());
   }
 
-  Future<void> deleteCardItem(String productId) async {
+  Future<void> deleteWishListItem(String productId) async {
     try {
       await firestore
           .collection("users")
           .doc(auth.currentUser!.uid)
-          .collection('cartItems')
+          .collection('wishList')
           .doc(productId)
           .delete();
     } catch (e) {
@@ -49,7 +49,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: StreamBuilder(
-            stream: getCartItems(),
+            stream: getWishListItems(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -75,7 +75,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   return FavoriteCardWidget(
                     items: item,
                     onDelete: () {
-                      deleteCardItem(item.productId);
+                      deleteWishListItem(item.productId);
                     },
                   );
                 },

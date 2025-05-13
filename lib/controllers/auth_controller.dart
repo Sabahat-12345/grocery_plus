@@ -57,7 +57,7 @@ class AuthController extends GetxController {
             email: email,
             phone: phoneNumber);
         await fireStore
-            .collection("Users")
+            .collection("users")
             .doc(auth.currentUser!.uid)
             .set(userData.toMap());
         Get.to(() => LoginScreen());

@@ -33,7 +33,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+        suffixIcon: InkWell(child: suffixIcon),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),

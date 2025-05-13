@@ -34,7 +34,7 @@ class ProductDetailController extends GetxController {
     isLoading.value = true;
     try {
       await firestore
-          .collection('Users')
+          .collection('users')
           .doc(auth.currentUser!.uid)
           .collection('wishList')
           .doc(item.productId)
