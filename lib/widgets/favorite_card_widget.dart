@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grocery_plus/Models/grocery_model.dart';
+import 'package:grocery_plus/models/grocery_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
 
 class FavoriteCardWidget extends StatelessWidget {

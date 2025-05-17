@@ -85,10 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
-                CustomTextField(
-                    hintText: "Search here",
-                    prefixIcon: Icon(Icons.search),
-                    controller: searchController),
+                // CustomTextField(
+                //     hintText: "Search here",
+                //     prefixIcon: Icon(Icons.search),
+                //     controller: searchController),
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                      hintText: "Search here",
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8))),
+                ),
                 SizedBox(
                   height: 12,
                 ),

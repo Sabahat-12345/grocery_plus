@@ -1,113 +1,48 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:grocery_plus/Models/user_model.dart';
-import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
-import 'package:grocery_plus/upload_image.dart';
-import 'package:grocery_plus/widgets/custom_text_field.dart';
+import 'package:grocery_plus/controllers/edit_profile_controller';
+
 import 'package:grocery_plus/widgets/primary_button.dart';
-import 'package:image_picker/image_picker.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends StatelessWidget {
   final UserModel currentUser;
-  const EditProfileScreen({super.key, required this.currentUser});
+  EditProfileScreen({super.key, required this.currentUser});
 
-  @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  var auth = FirebaseAuth.instance;
-  var firestore = FirebaseFirestore.instance;
-  XFile? imageFile;
-  final ImagePicker picker = ImagePicker();
-  bool isLoading = false;
-
-  Future<void> pickImage() async {
-    try {
-      final XFile? selectedImage =
-          await picker.pickImage(source: ImageSource.camera);
-      setState(() {
-        imageFile = selectedImage;
-      });
-    } catch (e) {
-      debugPrint("Error while picking image: $e");
-    }
-  }
-
-  Future<void> updateUserProfile(
-      String username, String userProfile, String email, String phone) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-
-      String imageUrl = widget.currentUser.profilePic ?? "";
-      if (imageFile != null) {
-        imageUrl = await uploadImageToFirebaseStorage(imageFile!);
-      }
-
-      await firestore.collection('Users').doc(auth.currentUser!.uid).update({
-        'username': username,
-        'profilePic': imageUrl,
-        'email': email,
-        'phone': phone,
-      });
-
-      setState(() {
-        isLoading = false;
-      });
-
-      // ✅ Show Snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile updated successfully!')),
-      );
-
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => BottomNavBar()));
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  final controller = Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
-    var nameController =
-        TextEditingController(text: widget.currentUser.username);
-    var emailController = TextEditingController(text: widget.currentUser.email);
-    var phoneController = TextEditingController(text: widget.currentUser.phone);
+    controller.initUser(currentUser);
 
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Column(
+          child: Obx(() => controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Column(
                     children: [
-                      // ✅ Profile Image with camera icon bottom-right
+                      // Profile picture section
                       Stack(
                         children: [
-                          CircleAvatar(
-                            radius: 60,
-                            backgroundImage: imageFile == null
-                                ? NetworkImage(widget.currentUser.profilePic ??
-                                    "https://www.pngall.com/wp-content/uploads/5/Avatar-Profile-PNG-Clipart.png")
-                                : FileImage(File(imageFile!.path))
-                                    as ImageProvider,
-                          ),
+                          Obx(() => CircleAvatar(
+                                radius: 60,
+                                backgroundImage: controller.imageFile.value ==
+                                        null
+                                    ? NetworkImage(currentUser.profilePic ??
+                                            "https://www.pngall.com/wp-content/uploads/5/Avatar-Profile-PNG-Clipart.png")
+                                        as ImageProvider
+                                    : FileImage(
+                                        File(controller.imageFile.value!.path)),
+                              )),
                           Positioned(
                             bottom: 0,
                             right: 0,
                             child: InkWell(
-                              onTap: () {
-                                pickImage();
-                              },
+                              onTap: controller.pickImage,
                               child: CircleAvatar(
                                 radius: 18,
                                 backgroundColor: Colors.grey.shade300,
@@ -119,28 +54,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      CustomTextField(
-                          hintText: 'Enter Name', controller: nameController),
+
+                      // 👤 Username Field
+                      TextField(
+                        controller: controller.nameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter Name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
                       const SizedBox(height: 10),
-                      CustomTextField(
-                          hintText: 'Enter Email', controller: emailController),
+
+                      // 📧 Email Field
+                      TextField(
+                        controller: controller.emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter Email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
                       const SizedBox(height: 10),
-                      CustomTextField(
-                          hintText: 'Enter Phone', controller: phoneController),
+
+                      // 📞 Phone Field
+                      TextField(
+                        controller: controller.phoneController,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter Phone',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+
                       const SizedBox(height: 400),
+
+                      // Save Button
                       PrimaryButton(
                         title: 'Save',
-                        ontap: () {
-                          updateUserProfile(
-                              nameController.text,
-                              widget.currentUser.profilePic ?? '',
-                              emailController.text,
-                              phoneController.text);
-                        },
+                        ontap: controller.updateUserProfile,
                       ),
                     ],
                   ),
-          ),
+                )),
         ),
       ),
     );
