@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:grocery_plus/controllers/change_password_controller.dart';
 import 'package:grocery_plus/widgets/primary_button.dart';
 
-class ChangePasswordScreen extends StatelessWidget {
-  ChangePasswordScreen({super.key});
+class ChangePasswordSceen extends StatelessWidget {
+  ChangePasswordSceen({super.key});
   final controller = Get.put(ChangePasswordController());
 
   InputDecoration _inputDecoration(String hintText) {

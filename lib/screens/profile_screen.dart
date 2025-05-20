@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileOption('Payment Methods', Icons.payment),
               _buildProfileOption('Addresses', Icons.location_on),
               _buildProfileOption('Change Password', Icons.lock, onTap: () {
-                Get.to(() => const ChangePasswordSceen());
+                Get.to(() => ChangePasswordSceen());
               }),
               _buildProfileOption('Log Out', Icons.logout, onTap: () {
                 controller.logout();
